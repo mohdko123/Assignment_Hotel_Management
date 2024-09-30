@@ -179,3 +179,27 @@ class DeskAgent(Employee):
 
     def check_room_availability(self, room_type, check_in_date, check_out_date, room_list):
         print("Method Function: This method will allow the agent to check if the room is available.")
+
+
+# creating afent, visitors and rooms
+desk_agent = DeskAgent(employee_id=1, name="Agent", address="UAE")
+
+visitor1 = Visitor(name="Visitor_1", email="visitor1@gmail.com", phone_number="123-555-1234")
+visitor2 = Visitor(name="Visitor_2", email="visitor2@gmail.com", phone_number="123-555-5678")
+visitor3 = Visitor(name="Visitor_3", email="visitor3@gmail.com", phone_number="123-555-5678")
+
+room1 = SingleBedRoom(room_number=101, accommodation_size=1)
+room2 = DoubleBedRoom(room_number=102, accommodation_size=2)
+
+# booking for visitor 1
+booking1 = Booking(visitor=visitor1, room=room1, check_in_date="2024-10-01", check_out_date="2024-10-05")
+visitor1._Visitor__booking = booking1
+
+# booking for visitor 2
+booking2 = Booking(visitor=visitor2, room=room2, check_in_date="2024-10-02", check_out_date="2024-10-06")
+visitor2._Visitor__booking = booking2
+
+# viewing the bookings for visitors
+visitor1.view_booking()
+visitor2.view_booking()
+visitor3.view_booking()
