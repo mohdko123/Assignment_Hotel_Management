@@ -53,7 +53,21 @@ class Visitor:
         print("Method Function: This method will take the details and send a room booking request")
 
     def view_booking(self):
-        pass
+        '''
+        This method will show the details of the bookings
+
+        '''
+        if self.__booking is not None:
+            booking = self.__booking
+            print(f"Booking Details for {self.__name}:")
+            print(f"Room Number: {booking.get_room().get_room_number()}")
+            print(f"Room Type: {booking.get_room().get_room_type()}")
+            print(f"Check-in Date: {booking.get_check_in_date()}")
+            print(f"Check-out Date: {booking.get_check_out_date()}")
+            print(f"Is Checked In: {booking.get_is_checked_in()}")
+            print(f"Is Canceled: {booking.get_is_canceled()}")
+        else:
+            print(f"{self.__name} has no booking.")
 
     def cancel_booking(self):
         print("Method Function: this method will sends a request to cancel their booking.")
