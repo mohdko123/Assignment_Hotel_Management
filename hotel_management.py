@@ -1,3 +1,5 @@
+from datetime import datetime
+
 class Employee:
     def __init__(self, employee_id, name, address):
         self.__employee_id = employee_id
@@ -52,20 +54,15 @@ class Visitor:
     def book_room(self, room_type, start_date, end_date, room_list):
         print("Method Function: This method will take the details and send a room booking request")
 
-    def view_booking(self):
+    def view_booking(self,hotel_info):
         '''
         This method will show the details of the bookings
 
         '''
         if self.__booking is not None:
-            booking = self.__booking
-            print(f"Booking Details for {self.__name}:")
-            print(f"Room Number: {booking.get_room().get_room_number()}")
-            print(f"Room Type: {booking.get_room().get_room_type()}")
-            print(f"Check-in Date: {booking.get_check_in_date()}")
-            print(f"Check-out Date: {booking.get_check_out_date()}")
-            print(f"Is Checked In: {booking.get_is_checked_in()}")
-            print(f"Is Canceled: {booking.get_is_canceled()}")
+
+            self.__booking.view_booking(hotel_info)
+
         else:
             print(f"{self.__name} has no booking.")
 
@@ -160,8 +157,50 @@ class Booking:
     def set_is_canceled(self, is_canceled):
         self.__is_canceled = is_canceled
 
-    def view_booking(self):
-        print("Method Function: This method will show the booking details")
+    def view_booking(self,hotel_info):
+
+
+
+        checkin = datetime.strptime(self.get_check_in_date(), "%Y-%m-%d")
+        checkout = datetime.strptime(self.get_check_out_date(), "%Y-%m-%d")
+        total_nights = (checkout - checkin).days
+        room_subtotal = 40*total_nights
+        tax = 0.05 * room_subtotal
+        total_charges = tax + room_subtotal
+
+
+
+        confirmation_message = '''
+        Your Reservation is Confirmed for {}
+        Thankyou for your Reservation. Please print your hotel receipt and show it at checkout.\n
+        
+        >> Visitor Details <<
+        Your Name : {}
+        Your Email : {}
+        Your Contact Number : {}
+        
+        >> Hotel Details <<
+        Hotel : {}
+        Hotel Address : {}
+        Hotel Phone : {}
+        
+        >> Summary of Charges <<
+        Billing Name : {}
+        Payment Method : Credit Card
+        One Night Stay Price : 40$
+        Total Nights : {}
+        Room Subtotal : {}$
+        Taxes : {} 5% of subtotal
+        Total Charges : {}$
+        
+        
+        
+        '''.format(self.get_check_in_date(),self.get_visitor().get_name(),
+                   self.get_visitor().get_email(),self.get_visitor().get_phone_number(),
+                   hotel_info[0],hotel_info[1],hotel_info[2],
+                   self.get_visitor().get_name(),total_nights,room_subtotal,tax,total_charges)
+        print(confirmation_message)
+
 
     def cancel_booking(self):
         self.__is_canceled = True
@@ -181,6 +220,12 @@ class DeskAgent(Employee):
         print("Method Function: This method will allow the agent to check if the room is available.")
 
 
+name = "Comfort Inn & Suites Los Alamos"
+address = "2455 Trinty Drive Los Alamos"
+hotel_phone = "505-661-1110"
+hotel_information = name,address,hotel_phone
+
+
 # creating afent, visitors and rooms
 desk_agent = DeskAgent(employee_id=1, name="Agent", address="UAE")
 
@@ -192,7 +237,7 @@ room1 = SingleBedRoom(room_number=101, accommodation_size=1)
 room2 = DoubleBedRoom(room_number=102, accommodation_size=2)
 
 # booking for visitor 1
-booking1 = Booking(visitor=visitor1, room=room1, check_in_date="2024-10-01", check_out_date="2024-10-05")
+booking1 = Booking(visitor=visitor1, room=room1, check_in_date="2024-10-15", check_out_date="2024-10-17")
 visitor1._Visitor__booking = booking1
 
 # booking for visitor 2
@@ -200,6 +245,6 @@ booking2 = Booking(visitor=visitor2, room=room2, check_in_date="2024-10-02", che
 visitor2._Visitor__booking = booking2
 
 # viewing the bookings for visitors
-visitor1.view_booking()
-visitor2.view_booking()
-visitor3.view_booking()
+visitor1.view_booking(hotel_information)
+visitor2.view_booking(hotel_information)
+visitor3.view_booking(hotel_information)
